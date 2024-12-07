@@ -5,13 +5,13 @@ import { useState } from "react"
 
 export default function Home() {
   const [error, setError] = useState("")
-  const [jsonData, setJsonData] = useState<string | null>(null)
+  const [jsonData, setJsonData] = (useState < string) | (null > null)
 
   const handleServiceAccountDownload = async () => {
     try {
       const response = await fetch("/api/download-json-auth", {
         headers: {
-          Authorization: "Bearer your_service_account_token_here",
+          Authorization: "Bearer my_secret_token",
         },
       })
 
@@ -30,7 +30,7 @@ export default function Home() {
       window.URL.revokeObjectURL(url)
       setError("")
       setJsonData(null)
-    } catch (err) {
+    } catch {
       setError("Failed to download. Please check your service account token.")
     }
   }
@@ -39,7 +39,7 @@ export default function Home() {
     try {
       const response = await fetch("/api/display-json-auth", {
         headers: {
-          Authorization: "Bearer your_service_account_token_here",
+          Authorization: "Bearer my_secret_token",
         },
       })
 
@@ -50,7 +50,7 @@ export default function Home() {
       const data = await response.json()
       setJsonData(JSON.stringify(data, null, 2))
       setError("")
-    } catch (err) {
+    } catch {
       setError("Failed to fetch data. Please check your service account token.")
       setJsonData(null)
     }
