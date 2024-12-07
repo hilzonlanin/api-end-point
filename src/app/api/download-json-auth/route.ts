@@ -1,13 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
-
-// Sample JSON data (in a real scenario, this could come from a database or external service)
-const sampleData = {
-  users: [
-    { id: 1, name: "Alice", email: "alice@example.com" },
-    { id: 2, name: "Bob", email: "bob@example.com" },
-    { id: 3, name: "Charlie", email: "charlie@example.com" },
-  ],
-}
+import { promises as fs } from "fs"
+import path from "path"
 
 export async function GET(request: NextRequest) {
   // Check for the Authorization header
@@ -27,11 +20,24 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Invalid token" }, { status: 401 })
   }
 
-  // Set headers for file download
-  const headers = new Headers()
-  headers.set("Content-Disposition", 'attachment; filename="data.json"')
-  headers.set("Content-Type", "application/json")
+  try {
+    // Use path.join for cross-platform compatibility
+    const dataFilePath = path.join(process.cwd(), "public", "data", "data.json")
+    const fileContents = await fs.readFile(dataFilePath, "utf8")
+    const data = JSON.parse(fileContents)
 
-  // Return the JSON data
-  return NextResponse.json(sampleData, { headers })
+    // Set headers for file download
+    const headers = new Headers()
+    headers.set("Content-Disposition", 'attachment; filename="data.json"')
+    headers.set("Content-Type", "application/json")
+
+    // Return the JSON data
+    return NextResponse.json(data, { headers })
+  } catch (error) {
+    console.error("Error reading file:", error)
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    )
+  }
 }

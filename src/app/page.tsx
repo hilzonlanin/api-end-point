@@ -30,7 +30,7 @@ export default function Home() {
       window.URL.revokeObjectURL(url)
       setError("")
       setJsonData(null)
-    } catch (err) {
+    } catch {
       setError("Failed to download. Please check your service account token.")
     }
   }
@@ -50,7 +50,7 @@ export default function Home() {
       const data = await response.json()
       setJsonData(JSON.stringify(data, null, 2))
       setError("")
-    } catch (err) {
+    } catch {
       setError("Failed to fetch data. Please check your service account token.")
       setJsonData(null)
     }
