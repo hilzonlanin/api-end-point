@@ -1,5 +1,4 @@
-import { NextRequest, NextResponse } from "next/server"
-import { verifyServiceAccount } from "@/lib/auth"
+import { NextResponse } from "next/server"
 
 // Sample JSON data (in a real scenario, this could come from a database or external service)
 const sampleData = {
@@ -10,13 +9,7 @@ const sampleData = {
   ],
 }
 
-export async function GET(request: NextRequest) {
-  // Verify the service account
-  const isAuthorized = await verifyServiceAccount(request)
-  if (!isAuthorized) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-  }
-
+export async function GET() {
   // Set headers for file download
   const headers = new Headers()
   headers.set("Content-Disposition", 'attachment; filename="data.json"')
