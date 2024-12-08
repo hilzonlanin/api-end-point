@@ -14,7 +14,7 @@ const geistMono = localFont({
 })
 
 export const metadata: Metadata = {
-  title: "Api End Point Tes",
+  title: "Api End Point Test",
   description: "Created for testing and downloading with Azure Data Factory",
 }
 
