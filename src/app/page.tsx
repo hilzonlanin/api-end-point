@@ -78,7 +78,7 @@ export default function Home() {
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
       <main className="flex flex-col items-center justify-center w-full max-w-4xl px-4 space-y-8">
         <h1 className="text-4xl font-bold mb-8 text-center">
-          JSON API End Point Test
+          API End Point Test
         </h1>
         <div className="w-full">
           <input
@@ -91,6 +91,17 @@ export default function Home() {
         </div>
         <div className="w-full space-y-4">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-gray-100 rounded-lg">
+            <button
+              onClick={handlePublicDisplay}
+              className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mb-2 sm:mb-0"
+            >
+              Display JSON (Public)
+            </button>
+            <span className="text-sm text-gray-600 mt-2 sm:mt-0">
+              Endpoint: /api/display-json/{filename}
+            </span>
+          </div>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-gray-100 rounded-lg">
             <Link
               href={`/api/download-json/${filename}`}
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2 sm:mb-0"
@@ -99,17 +110,6 @@ export default function Home() {
             </Link>
             <span className="text-sm text-gray-600 mt-2 sm:mt-0">
               Endpoint: /api/download-json/{filename}
-            </span>
-          </div>
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-gray-100 rounded-lg">
-            <button
-              onClick={handleServiceAccountDownload}
-              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-2 sm:mb-0"
-            >
-              Download JSON (Service Account)
-            </button>
-            <span className="text-sm text-gray-600 mt-2 sm:mt-0">
-              Endpoint: /api/download-json-auth/{filename}
             </span>
           </div>
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-gray-100 rounded-lg">
@@ -125,13 +125,13 @@ export default function Home() {
           </div>
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-gray-100 rounded-lg">
             <button
-              onClick={handlePublicDisplay}
-              className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mb-2 sm:mb-0"
+              onClick={handleServiceAccountDownload}
+              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-2 sm:mb-0"
             >
-              Display JSON (Public)
+              Download JSON (Service Account)
             </button>
             <span className="text-sm text-gray-600 mt-2 sm:mt-0">
-              Endpoint: /api/display-json/{filename}
+              Endpoint: /api/download-json-auth/{filename}
             </span>
           </div>
         </div>
