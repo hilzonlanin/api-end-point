@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/dowload-simple.js", "src/components"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/dowload-simple.js", "src/components", "src/app/api/display-json-auth/[filename]/route.js", "src/app/api/download-json-auth/[filename]/route.js"],
   "exclude": ["node_modules"]
 }

@@ -1,11 +1,8 @@
-import { NextRequest, NextResponse } from "next/server"
+import { NextResponse } from "next/server"
 import { promises as fs } from "fs"
 import path from "path"
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { filename: string } }
-) {
+export async function GET(request, { params }) {
   const myparams = await params
   const filename = myparams.filename || "data.json"
 
@@ -27,11 +24,7 @@ export async function GET(
     const fileContents = await fs.readFile(dataFilePath, "utf8")
     const data = JSON.parse(fileContents)
 
-    const headers = new Headers()
-    headers.set("Content-Disposition", `attachment; filename="${filename}"`)
-    headers.set("Content-Type", "application/json")
-
-    return NextResponse.json(data, { headers })
+    return NextResponse.json(data)
   } catch (error) {
     console.error("Error reading file:", error)
     return NextResponse.json(
