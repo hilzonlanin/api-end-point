@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/dowload-simple.js", "src/components", "src/app/api/display-json-auth/[filename]/route.js", "src/app/api/download-json-auth/[filename]/route.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/dowload-simple.js", "src/components", "src/app/api/display-json-auth/[filename]/route.js", "src/app/api/download-json-auth/[filename]/route.js", "src/app/api/download-json/[filename]/route.js", "src/app/api/display-json/[filename]/route.js"],
   "exclude": ["node_modules"]
 }
