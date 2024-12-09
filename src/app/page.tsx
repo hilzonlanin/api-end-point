@@ -7,12 +7,18 @@ export default function Home() {
   const [error, setError] = useState("")
   const [jsonData, setJsonData] = useState<string | null>(null)
   const [filename, setFilename] = useState("data.json")
+  const [subscriptionKey, setSubscriptionKey] = useState(
+    "my-secret-subscription-key"
+  )
+  const [clientId, setClientId] = useState("my-client-id")
+  const [clientSecret, setClientSecret] = useState("my-client-secret")
+  const [token, setToken] = useState<string | null>(null)
 
   const handleServiceAccountDownload = async () => {
     try {
       const response = await fetch(`/api/download-json-auth/${filename}`, {
         headers: {
-          Authorization: "Bearer your_service_account_token_here",
+          Authorization: "Bearer my_service_account_token_here",
         },
       })
 
@@ -40,7 +46,7 @@ export default function Home() {
     try {
       const response = await fetch(`/api/display-json-auth/${filename}`, {
         headers: {
-          Authorization: "Bearer your_service_account_token_here",
+          Authorization: "Bearer my_service_account_token_here",
         },
       })
 
@@ -74,20 +80,49 @@ export default function Home() {
     }
   }
 
+  const handleGenerateToken = async () => {
+    console.log(JSON.stringify({ subscriptionKey, clientId, clientSecret }))
+    try {
+      const response = await fetch("/api/generate-token", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ subscriptionKey, clientId, clientSecret }),
+      })
+
+      if (!response.ok) {
+        throw new Error("Failed to generate token")
+      }
+
+      const data = await response.json()
+      setToken(data.token)
+      setError("")
+    } catch {
+      setError("Failed to generate token. Please check your credentials.")
+      setToken(null)
+    }
+  }
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
       <main className="flex flex-col items-center justify-center w-full max-w-4xl px-4 space-y-8">
         <h1 className="text-4xl font-bold mb-8 text-center">
-          API End Point Test
+          Api End Point Test
         </h1>
         <div className="w-full">
-          <input
-            type="text"
-            value={filename}
-            onChange={(e) => setFilename(e.target.value)}
-            placeholder="Enter filename (e.g., data.json)"
-            className="w-full px-4 py-2 border rounded-md mb-4"
-          />
+          <div className="flex items-center space-x-4">
+            <label htmlFor="filename" className="w-24 text-right">
+              filename:
+            </label>
+            <input
+              id="filename"
+              type="text"
+              value={filename}
+              onChange={(e) => setFilename(e.target.value)}
+              className="flex-grow px-4 py-2 border rounded-md mb-4"
+            />
+          </div>
         </div>
         <div className="w-full space-y-4">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-gray-100 rounded-lg">
@@ -98,7 +133,7 @@ export default function Home() {
               Display JSON (Public)
             </button>
             <span className="text-sm text-gray-600 mt-2 sm:mt-0">
-              Endpoint: /api/display-json/{filename}
+              /api/display-json/{filename}
             </span>
           </div>
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-gray-100 rounded-lg">
@@ -109,7 +144,7 @@ export default function Home() {
               Download JSON (Public)
             </Link>
             <span className="text-sm text-gray-600 mt-2 sm:mt-0">
-              Endpoint: /api/download-json/{filename}
+              /api/download-json/{filename}
             </span>
           </div>
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-gray-100 rounded-lg">
@@ -120,7 +155,7 @@ export default function Home() {
               Display JSON (Service Account)
             </button>
             <span className="text-sm text-gray-600 mt-2 sm:mt-0">
-              Endpoint: /api/display-json-auth/{filename}
+              /api/display-json-auth/{filename}
             </span>
           </div>
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-gray-100 rounded-lg">
@@ -131,9 +166,68 @@ export default function Home() {
               Download JSON (Service Account)
             </button>
             <span className="text-sm text-gray-600 mt-2 sm:mt-0">
-              Endpoint: /api/download-json-auth/{filename}
+              /api/download-json-auth/{filename}
             </span>
           </div>
+        </div>
+        <div className="w-full space-y-4 mt-8">
+          <h2 className="text-2xl font-bold">Generate Token</h2>
+          <div className="flex flex-col space-y-4">
+            <div className="flex items-center space-x-4">
+              <label htmlFor="subscriptionKey" className="w-32 text-right">
+                subscriptionKey:
+              </label>
+              <input
+                id="subscriptionKey"
+                type="text"
+                value={subscriptionKey}
+                onChange={(e) => setSubscriptionKey(e.target.value)}
+                className="flex-grow px-4 py-2 border rounded-md"
+              />
+            </div>
+            <div className="flex items-center space-x-4">
+              <label htmlFor="clientId" className="w-32 text-right">
+                clientId:
+              </label>
+              <input
+                id="clientId"
+                type="text"
+                value={clientId}
+                onChange={(e) => setClientId(e.target.value)}
+                className="flex-grow px-4 py-2 border rounded-md"
+              />
+            </div>
+            <div className="flex items-center space-x-4">
+              <label htmlFor="clientSecret" className="w-32 text-right">
+                clientSecret:
+              </label>
+              <input
+                id="clientSecret"
+                type="password"
+                value={clientSecret}
+                onChange={(e) => setClientSecret(e.target.value)}
+                className="flex-grow px-4 py-2 border rounded-md"
+              />
+            </div>
+            <button
+              onClick={handleGenerateToken}
+              className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Generate Token
+            </button>
+          </div>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-gray-100 rounded-lg">
+            <span className="font-bold">Generate Token Endpoint:</span>
+            <span className="text-sm text-gray-600 mt-2 sm:mt-0">
+              POST /api/generate-token
+            </span>
+          </div>
+          {token && (
+            <div className="p-4 bg-green-100 rounded-lg">
+              <h3 className="font-bold mb-2">Generated Token:</h3>
+              <p className="break-all">{token}</p>
+            </div>
+          )}
         </div>
         {error && <p className="text-red-500 mb-4">{error}</p>}
         {jsonData && (
